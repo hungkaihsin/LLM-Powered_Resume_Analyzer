@@ -4,10 +4,8 @@ from src.config import GEMINI_API_KEY
 genai.configure(api_key=GEMINI_API_KEY)
 
 def generate_titles_and_keywords_gemini(career_goal: str):
-    model = genai.GenerativeModel("gemini-pro")
+    model = genai.GenerativeModel("gemini-2.5-flash")  
     prompt = f"""
-    You are a career advisor AI.
-
     Based on the user's goal: "{career_goal}", 
     generate:
     - 5 related job titles

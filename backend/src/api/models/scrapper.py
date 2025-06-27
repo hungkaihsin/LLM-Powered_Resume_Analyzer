@@ -1,5 +1,8 @@
 import requests
 from src.api.models.tools import ADZUNA_API_KEY, ADZUNA_APP_ID
+from pdfminer.high_level import extract_text
+import os
+
 
 
 # scrape the data from aduza by using its api
@@ -29,3 +32,12 @@ def scrape_adzuna_jobs(keyword: str, location="USA", max_results=5):
         })
 
     return jobs
+
+
+
+def parse_resume_pdf(file_path):
+    if not os.path.exists(file_path):
+        raise FileNotFoundError("Resume file not found.")
+    
+    text = extract_text(file_path)
+    return text.strip()

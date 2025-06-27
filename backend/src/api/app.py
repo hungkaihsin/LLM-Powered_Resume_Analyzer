@@ -1,4 +1,4 @@
-from src.api.models.scrapper import scrape_adzuna_jobs
+from src.api.models.scrapper import scrape_adzuna_jobs, parse_resume_pdf
 from src.api.models.tools import save_jsonl
 
 
@@ -7,9 +7,11 @@ from src.api.models.tools import save_jsonl
 
 if __name__ == "__main__":
 
-    jobs = scrape_adzuna_jobs("data science")
-    save_jsonl("src/data/raw_jobs.jsonl", jobs)
-    for job in jobs:
-        print(job)
-
+    # jobs = scrape_adzuna_jobs("data science")
+    # save_jsonl("src/data/raw_jobs.jsonl", jobs)
+    # for job in jobs:
+    #     print(job)
+    result = parse_resume_pdf('src/data/Resume.pdf')
+    print(result)
+    
 

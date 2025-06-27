@@ -119,3 +119,19 @@ def compare_skills(resume_skills: list, job_skills: list, threshold=80):
         "missing_skills": missing
     }
     
+    
+def safe_extract_skills(response_text):
+    """
+    Cleans and parses Gemini response to extract the 'skills' list from JSON.
+    """
+    try:
+        # Remove triple backticks and optional 'json' label
+        cleaned_text = re.sub(r"```json|```", "", response_text).strip()
+
+        # Load JSON
+        data = json.loads(cleaned_text)
+        return data.get("skills", [])
+    except json.JSONDecodeError:
+        print("❌ Failed to parse Gemini response as JSON:")
+        print(response_text)
+        return []

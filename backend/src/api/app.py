@@ -7,12 +7,24 @@ from src.api.models.scrapper import (
     extract_skills_from_job,
     compare_skills,
     safe_extract_skills,
-    search_coursera_courses  # ✅ new import
+    search_courses_via_serper  # using Serper instead of scraping
 )
+
+
+def normalize_skill_query(skill: str) -> str:
+    """
+    Simplifies a skill string for better Coursera search results:
+    - Removes parentheses
+    - Strips spaces
+    - Lowercases
+    """
+    skill = re.sub(r"\(.*?\)", "", skill)  # Remove anything in parentheses
+    return skill.strip().lower()
+
 
 if __name__ == "__main__":
     print("🔍 Scraping jobs from Adzuna...")
-    scraped_jobs = scrape_adzuna_jobs("Machine Learning")  # You can change the keyword
+    scraped_jobs = scrape_adzuna_jobs("machine learning")  # You can change the keyword
 
     print("📄 Parsing resume...")
     resume_text = parse_resume_pdf("src/data/Resume.pdf")
@@ -43,10 +55,20 @@ if __name__ == "__main__":
     print("\n🎓 Recommending Courses for Missing Skills:\n")
     for skill in all_missing_skills:
         print(f"🔧 Skill: {skill}")
-        courses = search_coursera_courses(skill)
+        query = normalize_skill_query(skill)
+        print(f"  🔎 Searching Coursera for: {query}")
+        
+        courses = search_courses_via_serper(query)
+
         if not courses:
-            print("  ❌ No courses found.")
-        for course in courses:
-            print(f"  📘 {course['title']}")
-            print(f"     👉 {course['url']}")
+            fallback = "machine learning"
+            print(f"  ⚠️ No results for '{query}', trying fallback: '{fallback}'")
+            courses = search_courses_via_serper(fallback)
+
+        if not courses:
+            print("  ❌ Still no courses found.")
+        else:
+            for course in courses:
+                print(f"  📘 {course['title']}")
+                print(f"     👉 {course['url']}")
         print("-" * 50)

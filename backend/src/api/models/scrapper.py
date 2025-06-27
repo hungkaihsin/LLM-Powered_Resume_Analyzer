@@ -141,30 +141,39 @@ def safe_extract_skills(response_text):
     
 
 
-def search_coursera_courses(skill: str, max_results=3):
-    url = "https://www.coursera.org/search"
-    params = {"query": skill}
+def search_courses_via_serper(skill: str, max_results=3):
+    """
+    Uses Serper.dev's Google Search API to find relevant Coursera courses for a given skill.
+    """
+    import os
+    import requests
+
+    SERPER_KEY = os.getenv("SERPAPI_API_KEY")
+    if not SERPER_KEY:
+        raise ValueError("Missing SERPAPI_API_KEY in environment variables.")
+
     headers = {
-        "User-Agent": "Mozilla/5.0"
+        "X-API-KEY": SERPER_KEY,
+        "Content-Type": "application/json"
     }
 
-    response = requests.get(url, params=params, headers=headers)
-    
+    data = {
+        "q": f"site:coursera.org {skill}",
+        "num": max_results
+    }
+
+    response = requests.post("https://google.serper.dev/search", headers=headers, json=data)
+
     if response.status_code != 200:
-        print(f"❌ Failed to fetch courses for '{skill}': Status {response.status_code}")
+        print(f"❌ Serper error {response.status_code}: {response.text}")
         return []
 
-    soup = BeautifulSoup(response.text, "html.parser")
+    results = []
+    for item in response.json().get("organic", [])[:max_results]:
+        results.append({
+            "skill": skill,
+            "title": item.get("title"),
+            "url": item.get("link")
+        })
 
-    courses = []
-    for card in soup.select("li[class*=ais-InfiniteHits-item]")[:max_results]:
-        title_tag = card.find("h2")
-        link_tag = card.find("a", href=True)
-        if title_tag and link_tag:
-            courses.append({
-                "skill": skill,
-                "title": title_tag.text.strip(),
-                "url": "https://www.coursera.org" + link_tag["href"]
-            })
-
-    return courses
+    return results

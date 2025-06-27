@@ -7,7 +7,9 @@ from src.api.models.tools import save_jsonl
 from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
 load_dotenv()
-
+import json
+import re
+from bs4 import BeautifulSoup
 
 
 
@@ -111,13 +113,14 @@ def compare_skills(resume_skills: list, job_skills: list, threshold=80):
         else:
             missing.append(job_skill)
 
-    match_percent = int(len(matched) / len(job_skills) * 100) if job_skills else 0
-
+    match_percent = int(len(matched) / len(job_skills) * 100) if job_skills else 0 
     return {
         "match_percent": match_percent,
         "matched_skills": matched,
         "missing_skills": missing
     }
+    
+    
     
     
 def safe_extract_skills(response_text):
@@ -135,3 +138,33 @@ def safe_extract_skills(response_text):
         print("❌ Failed to parse Gemini response as JSON:")
         print(response_text)
         return []
+    
+
+
+def search_coursera_courses(skill: str, max_results=3):
+    url = "https://www.coursera.org/search"
+    params = {"query": skill}
+    headers = {
+        "User-Agent": "Mozilla/5.0"
+    }
+
+    response = requests.get(url, params=params, headers=headers)
+    
+    if response.status_code != 200:
+        print(f"❌ Failed to fetch courses for '{skill}': Status {response.status_code}")
+        return []
+
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    courses = []
+    for card in soup.select("li[class*=ais-InfiniteHits-item]")[:max_results]:
+        title_tag = card.find("h2")
+        link_tag = card.find("a", href=True)
+        if title_tag and link_tag:
+            courses.append({
+                "skill": skill,
+                "title": title_tag.text.strip(),
+                "url": "https://www.coursera.org" + link_tag["href"]
+            })
+
+    return courses

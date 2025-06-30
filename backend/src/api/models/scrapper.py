@@ -7,7 +7,9 @@ from src.api.models.tools import save_jsonl
 from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
 load_dotenv()
-
+import json
+import re
+from bs4 import BeautifulSoup
 
 
 
@@ -111,13 +113,14 @@ def compare_skills(resume_skills: list, job_skills: list, threshold=80):
         else:
             missing.append(job_skill)
 
-    match_percent = int(len(matched) / len(job_skills) * 100) if job_skills else 0
-
+    match_percent = int(len(matched) / len(job_skills) * 100) if job_skills else 0 
     return {
         "match_percent": match_percent,
         "matched_skills": matched,
         "missing_skills": missing
     }
+    
+    
     
     
 def safe_extract_skills(response_text):
@@ -135,3 +138,42 @@ def safe_extract_skills(response_text):
         print("❌ Failed to parse Gemini response as JSON:")
         print(response_text)
         return []
+    
+
+
+def search_courses_via_serper(skill: str, max_results=3):
+    """
+    Uses Serper.dev's Google Search API to find relevant Coursera courses for a given skill.
+    """
+    import os
+    import requests
+
+    SERPER_KEY = os.getenv("SERPAPI_API_KEY")
+    if not SERPER_KEY:
+        raise ValueError("Missing SERPAPI_API_KEY in environment variables.")
+
+    headers = {
+        "X-API-KEY": SERPER_KEY,
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "q": f"site:coursera.org {skill}",
+        "num": max_results
+    }
+
+    response = requests.post("https://google.serper.dev/search", headers=headers, json=data)
+
+    if response.status_code != 200:
+        print(f"❌ Serper error {response.status_code}: {response.text}")
+        return []
+
+    results = []
+    for item in response.json().get("organic", [])[:max_results]:
+        results.append({
+            "skill": skill,
+            "title": item.get("title"),
+            "url": item.get("link")
+        })
+
+    return results

@@ -129,8 +129,8 @@ const ResumeAnalyzer = () => {
                 </button>
               </div>
 
-              <div className="results-box">
-                {activeTab === "job" && result.jobs.map((job, i) => (
+              <div className={`results-box fade ${result ? "fadeUp delay-1" : ""}`} key={activeTab}>
+                {activeTab === "job" && result?.jobs.map((job, i) => (
                   <div key={i} className="job-card">
                     <h4>{job.title} at {job.company}</h4>
                     <p className={`match-percent ${job.match_percent >= 80 ? "high" : job.match_percent >= 50 ? "medium" : "low"}`}>
@@ -142,20 +142,23 @@ const ResumeAnalyzer = () => {
                   </div>
                 ))}
 
-                {activeTab === "courses" && result.recommended_courses.map((rec, i) => (
-                  <div key={i}>
-                    <h4>{rec.skill}</h4>
-                    <ul>
-                      {rec.courses.map((c, idx) => (
-                        <li key={idx}>
-                          <a href={c.url} target="_blank" rel="noopener noreferrer">
-                            {c.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                  {activeTab === "courses" && result?.recommended_courses.map((rec, i) => (
+                    <div key={i} className="course-block">
+                      <h4 className="course-skill">{rec.skill}</h4>
+                      <ul className="course-list">
+                        <h3>Links to courses:</h3>
+                        {rec.courses.map((c, idx) => (
+                          <li key={idx}>
+                            <a href={c.url} target="_blank" rel="noopener noreferrer">
+                              {c.title}
+                            </a>
+                          </li>
+                            
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+
               </div>
             </>
           )}

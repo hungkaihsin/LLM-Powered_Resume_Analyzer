@@ -114,14 +114,15 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
   color: #333;
 }
 
 .skill-chip {
   background: #ccc;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 32px;
+
 }
 
 .tab-controls {
@@ -152,15 +153,32 @@
   min-height: 250px;
 }
 
-.results-box a {
+.job-card a {
   border-radius: 0.5rem;
   background-color: rgb(223, 203, 203);
   padding: 0.4rem;
   color: #333;
-  align-content: center;
 }
-.results-box a:hover{
+.job-card a:hover{
   background-color: rgb(158, 144, 144);
+}
+
+.job-card {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+}
+  
+}
+
+.fade {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade.fade-in {
+  opacity: 1;
 }
 
 .match-percent {
@@ -182,11 +200,7 @@
 
 
 
-.job-card {
-  border-bottom: 1px solid #e2bebe;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-}
+
 
 .progress-status {
   margin-top: 0.5rem;
@@ -208,6 +222,44 @@
   height: 100%;
   background: linear-gradient(90deg, #ffb663, #b5863f);
   transition: width 0.3s ease;
+}
+
+.course-block {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+}
+
+.course-skill {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.course-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.course-list h3{
+  text-align: left;
+  font-size: 16px;
+}
+
+.course-link {
+  color: #2a4bff;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 0.3rem;
+}
+
+.course-link:hover {
+  text-decoration: underline;
+  color: #1a33cc;
 }
 
 

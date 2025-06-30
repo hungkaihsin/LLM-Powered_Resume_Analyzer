@@ -106,20 +106,20 @@ def compare_skills(resume_skills: list, job_skills: list, threshold=80):
 
     for job_skill in job_skills:
         job_skill_lower = job_skill.lower()
-        best_match = max([fuzz.token_set_ratio(job_skill_lower, res) for res in resume_skills_lower], default=0)
+        scores = [fuzz.token_set_ratio(job_skill_lower, res) for res in resume_skills_lower]
+        best_score = max(scores) if scores else 0
 
-        if best_match >= threshold:
+        if best_score >= threshold:
             matched.append(job_skill)
         else:
             missing.append(job_skill)
 
-    match_percent = int(len(matched) / len(job_skills) * 100) if job_skills else 0 
+    match_percent = round((len(matched) / len(job_skills)) * 100) if job_skills else 0
     return {
         "match_percent": match_percent,
         "matched_skills": matched,
         "missing_skills": missing
     }
-    
     
     
     

@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../style/ResumeAnalyzer.css";
 import "../style/share.css";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const ResumeAnalyzer = () => {
   const [resume, setResume] = useState(null);
@@ -11,10 +12,20 @@ const ResumeAnalyzer = () => {
   const [activeTab, setActiveTab] = useState("job");
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("");
+  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!resume) return alert("Please upload a resume.");
+    if (!resume) {
+    toast.error("Please upload a resume file.");
+    return;
+    }
+    if (!keyword.trim()) {
+      toast.error("Please enter a job keyword.");
+      return;
+    }
+
 
     const formData = new FormData();
     formData.append("resume", resume);
@@ -75,9 +86,16 @@ const ResumeAnalyzer = () => {
               <input
                 type="file"
                 accept=".pdf"
-                onChange={(e) => setResume(e.target.files[0])}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    setResume(file);
+                    toast.success("Resume uploaded successfully!");
+                  }
+                }}
                 required
               />
+
             </div>
 
             <input
@@ -87,7 +105,12 @@ const ResumeAnalyzer = () => {
               onChange={(e) => setKeyword(e.target.value)}
               placeholder="Enter job keyword"
             />
-            <button type="submit" className="submit-btn" disabled={loading}>
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={loading}
+            >
+
               {loading ? "Analyzing..." : "Submit"}
             </button>
           </form>
@@ -138,7 +161,9 @@ const ResumeAnalyzer = () => {
                     </p>
                     <p><strong>Matched:</strong> {job.matched_skills.join(", ")}</p>
                     <p><strong>Missing:</strong> {job.missing_skills.join(", ")}</p>
+                    <div className="job-link-container">
                     <a href={job.url} target="_blank" rel="noopener noreferrer">View Job</a>
+                    </div>
                   </div>
                 ))}
 

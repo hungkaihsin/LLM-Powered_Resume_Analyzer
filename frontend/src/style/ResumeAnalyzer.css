@@ -96,6 +96,12 @@
   cursor: pointer;
 }
 
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
 .skills-box {
   margin-top: 1.5rem;
   background: white;
@@ -170,6 +176,11 @@
   border-radius: 10px;
 }
   
+.job-link-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
 
 
 .fade {

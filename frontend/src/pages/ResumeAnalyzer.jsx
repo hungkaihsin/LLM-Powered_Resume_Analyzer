@@ -101,59 +101,64 @@ const ResumeAnalyzer = () => {
             </>
           )}
 
-          <div className="skills-box">
-            <div className="skills-list">
-              <h3>Your skills:</h3>
-              {
-                result?.resume_skills.map((skill, i) => (
-                  <span key={i} className="skill-chip">{skill}</span>
+          {result && (
+            <>
+              <div className="skills-box">
+                <div className="skills-list">
+                  <h3>Your skills:</h3>
+                  {
+                    result.resume_skills.map((skill, i) => (
+                      <span key={i} className="skill-chip">{skill}</span>
+                    ))
+                  }
+                </div>
+              </div>
+
+              <div className="tab-controls">
+                <button
+                  className={`tab-btn ${activeTab === "job" ? "active-tab" : ""}`}
+                  onClick={() => setActiveTab("job")}
+                >
+                  Job match
+                </button>
+                <button
+                  className={`tab-btn ${activeTab === "courses" ? "active-tab" : ""}`}
+                  onClick={() => setActiveTab("courses")}
+                >
+                  Online courses
+                </button>
+              </div>
+
+              <div className="results-box">
+                {activeTab === "job" && result.jobs.map((job, i) => (
+                  <div key={i} className="job-card">
+                    <h4>{job.title} at {job.company}</h4>
+                    <p className={`match-percent ${job.match_percent >= 80 ? "high" : job.match_percent >= 50 ? "medium" : "low"}`}>
+                      Match: {job.match_percent.toFixed(1)}%
+                    </p>
+                    <p><strong>Matched:</strong> {job.matched_skills.join(", ")}</p>
+                    <p><strong>Missing:</strong> {job.missing_skills.join(", ")}</p>
+                    <a href={job.url} target="_blank" rel="noopener noreferrer">View Job</a>
+                  </div>
                 ))}
-            </div>
-          </div>
 
-          <div className="tab-controls">
-            <button
-              className={`tab-btn ${activeTab === "job" ? "active-tab" : ""}`}
-              onClick={() => setActiveTab("job")}
-            >
-              Job match
-            </button>
-            <button
-              className={`tab-btn ${activeTab === "courses" ? "active-tab" : ""}`}
-              onClick={() => setActiveTab("courses")}
-            >
-              Online courses
-            </button>
-          </div>
-
-          <div className="results-box">
-            {activeTab === "job" && result?.jobs.map((job, i) => (
-              <div key={i} className="job-card">
-                <h4>{job.title} at {job.company}</h4>
-                <p className={`match-percent ${job.match_percent >= 80 ? "high" : job.match_percent >= 50 ? "medium" : "low"}`}>
-                  Match: {job.match_percent.toFixed(1)}%
-                </p>
-                <p><strong>Matched:</strong> {job.matched_skills.join(", ")}</p>
-                <p><strong>Missing:</strong> {job.missing_skills.join(", ")}</p>
-                <a href={job.url} target="_blank" rel="noopener noreferrer">View Job</a>
+                {activeTab === "courses" && result.recommended_courses.map((rec, i) => (
+                  <div key={i}>
+                    <h4>{rec.skill}</h4>
+                    <ul>
+                      {rec.courses.map((c, idx) => (
+                        <li key={idx}>
+                          <a href={c.url} target="_blank" rel="noopener noreferrer">
+                            {c.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
-            ))}
-
-            {activeTab === "courses" && result?.recommended_courses.map((rec, i) => (
-              <div key={i}>
-                <h4>{rec.skill}</h4>
-                <ul>
-                  {rec.courses.map((c, idx) => (
-                    <li key={idx}>
-                      <a href={c.url} target="_blank" rel="noopener noreferrer">
-                        {c.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+            </>
+          )}
         </div>
       </div>
     </div>

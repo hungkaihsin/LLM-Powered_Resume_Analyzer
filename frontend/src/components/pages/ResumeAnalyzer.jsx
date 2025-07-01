@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "../style/ResumeAnalyzer.css";
-import "../style/share.css";
+import "../styles/ResumeAnalyzer.css";
+import "../styles/shared.css";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
@@ -73,7 +73,7 @@ const ResumeAnalyzer = () => {
     <div className="analyzer-wrapper">
       <div className="nav-buttons fadeUp delay-1">
         <Link className="nav-button" to="/">Introduction</Link>
-        <button className="nav-button active">Analysis</button>
+        <button className="nav-button active">Functionality</button>
       </div>
 
       <div className="analyzer-container fadeUp delay-2">

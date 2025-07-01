@@ -4,7 +4,7 @@ import re
 import json
 import time
 import uuid
-from src.api.models.scrapper import (
+from src.utils.scrapper import (
     scrape_adzuna_jobs,
     parse_resume_pdf,
     extract_skills_from_resume,

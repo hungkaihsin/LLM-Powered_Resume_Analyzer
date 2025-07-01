@@ -1,15 +1,13 @@
 import requests
-from src.api.models.tools import ADZUNA_API_KEY, ADZUNA_APP_ID
+from src.utils.tools import ADZUNA_API_KEY, ADZUNA_APP_ID, save_jsonl
 from pdfminer.high_level import extract_text
 import google.generativeai as genai
 import os
-from src.api.models.tools import save_jsonl
-from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
-load_dotenv()
 import json
 import re
 from bs4 import BeautifulSoup
+from src.config import GEMINI_API_KEY
 
 
 
@@ -53,7 +51,7 @@ def parse_resume_pdf(file_path):
 
 
 # Allow gemini to extract sthe skill from reusme
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
 genai.configure(api_key=GEMINI_API_KEY)
 
 

@@ -29,7 +29,7 @@ def analyze_resume():
         return jsonify({"error": "No resume uploaded"}), 400
 
     unique_id = uuid.uuid4().hex
-    UPLOAD_DIR = "/temp"
+    UPLOAD_DIR = "/tmp"
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     filepath = os.path.join(UPLOAD_DIR, f"Resume_{unique_id}.pdf")
     file.save(filepath)

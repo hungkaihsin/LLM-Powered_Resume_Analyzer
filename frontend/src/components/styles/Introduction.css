@@ -59,6 +59,7 @@
 
 .cta-button:hover {
   background-color: #6a5240;
+  color: white;
 }
 
 .contact-buttons {
@@ -87,4 +88,11 @@
 
 .contact-buttons a.gmail {
     background-color: #fce0e0;
+}
+
+
+.introduction-card li {
+  text-align: left;
+  margin-bottom: 15px;
+
 }

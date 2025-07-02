@@ -3,6 +3,8 @@ import "../styles/ResumeAnalyzer.css";
 import "../styles/shared.css";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
+const PORT = import.meta.env.VITE_PORT;
+
 
 const ResumeAnalyzer = () => {
   const [resume, setResume] = useState(null);
@@ -35,7 +37,7 @@ const ResumeAnalyzer = () => {
     setProgress(0);
     setStatus("Starting...");
 
-    const response = await fetch("http://localhost:5000/api/analyze-progress", {
+    const response = await fetch(`http://localhost:${PORT}/api/analyze-progress`, {
       method: "POST",
       body: formData,
     });
@@ -81,7 +83,7 @@ const ResumeAnalyzer = () => {
           <form onSubmit={handleSubmit} className="form-area">
             <div className="upload-container">
               <label className="upload-btn">
-                Upload Resume:
+                Upload Resume (.pdf):
               </label>
               <input
                 type="file"

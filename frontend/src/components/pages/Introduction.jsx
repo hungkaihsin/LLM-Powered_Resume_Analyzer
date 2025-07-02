@@ -24,11 +24,20 @@ const Introduction = () => {
           </section>
 
           <section>
-            <h2>About the Creator</h2>
+            <h2>What it Does</h2>
             <p>
-              I'm a data science graduate student passionate about turning data into real-world impact. I have experience in machine learning (LSTM, ConvNets), backend API development, and SQL databases. Bilingual in Mandarin and English, I'm curious, collaborative, and driven to build smart, effective solutions.
+              Resume Optimizer AI is a powerful tool designed to help you tailor your resume for specific job opportunities. Here's how it works:
             </p>
+            <ul>
+              <li><strong>Resume Analysis:</strong> Upload your resume (PDF format), and our AI will extract your key skills.</li>
+              <li><strong>Job Matching:</strong> Provide a job keyword, and the system will scrape relevant job postings.</li>
+              <li><strong>Skill Comparison:</strong> Your resume skills are compared against the skills required for each job, generating a match percentage.</li>
+              <li><strong>Identify Gaps:</strong> Discover which skills you're missing for your desired roles.</li>
+              <li><strong>Course Recommendations:</strong> Get personalized recommendations for online courses to help you acquire the missing skills and boost your employability.</li>
+            </ul>
           </section>
+
+
 
           <section>
             <h2>Contact Info</h2>
@@ -39,8 +48,9 @@ const Introduction = () => {
             </div>
           </section>
         </div>
+
+        </div>
       </div>
-    </div>
   );
 };
 

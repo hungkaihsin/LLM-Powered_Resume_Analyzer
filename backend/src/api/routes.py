@@ -29,7 +29,9 @@ def analyze_resume():
         return jsonify({"error": "No resume uploaded"}), 400
 
     unique_id = uuid.uuid4().hex
-    filepath = os.path.join("src/data", f"Resume_{unique_id}.pdf")
+    UPLOAD_DIR = "/tmp"
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    filepath = os.path.join(UPLOAD_DIR, f"Resume_{unique_id}.pdf")
     file.save(filepath)
 
     try:
@@ -95,7 +97,7 @@ def analyze_resume_stream():
         return jsonify({"error": "No resume uploaded"}), 400
 
     unique_id = uuid.uuid4().hex
-    filepath = os.path.join("src/data", f"Resume_{unique_id}.pdf")
+    filepath = os.path.join("/tmp", f"Resume_{unique_id}.pdf")
     file.save(filepath)
 
     def generate():

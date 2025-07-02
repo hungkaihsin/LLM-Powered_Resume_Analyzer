@@ -194,3 +194,5 @@ cython_debug/
 
 backend/src/data/*.pdf
 node_modules/
+
+backend/src/data/*.jsonl

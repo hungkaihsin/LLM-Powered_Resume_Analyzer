@@ -128,14 +128,13 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
-
+.env
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -192,3 +191,8 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+backend/src/data/*.pdf
+node_modules/
+
+backend/src/data/*.jsonl

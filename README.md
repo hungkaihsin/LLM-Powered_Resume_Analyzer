@@ -1,6 +1,6 @@
 # Resume Optimizer AI
 
-[Link to the website](https://your-deployment-link.com)
+[Link to the website]([https://your-deployment-link.com](https://resume-analyzer-frontend-nht1.onrender.com))
 
 Resume Optimizer AI is a web application designed to help job seekers tailor their resumes to specific job descriptions. By leveraging Natural Language Processing (NLP) and Large Language Models (LLMs), this tool analyzes your resume, compares it against a target job posting, and provides a match percentage. It also identifies skill gaps and recommends relevant online courses to enhance your qualifications.
 

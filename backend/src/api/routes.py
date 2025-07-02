@@ -29,9 +29,7 @@ def analyze_resume():
         return jsonify({"error": "No resume uploaded"}), 400
 
     unique_id = uuid.uuid4().hex
-    UPLOAD_DIR = "/tmp"
-    os.makedirs(UPLOAD_DIR, exist_ok=True)
-    filepath = os.path.join(UPLOAD_DIR, f"Resume_{unique_id}.pdf")
+    filepath = os.path.join("/tmp", f"Resume_{unique_id}.pdf")
     file.save(filepath)
 
     try:
@@ -165,8 +163,9 @@ def analyze_resume_stream():
     stream_with_context(generate()),
     headers={
         "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        "X-Accel-Buffering": "no",  # disables buffering in some web servers
-        "Connection": "keep-alive"  # hint for streaming connection
+        "Cache-Control": "no-cache, no-transform",
+        "X-Accel-Buffering": "no",      # Most important: disables buffering in nginx/proxy
+        "Connection": "keep-alive",     # Keeps connection open for streaming
+        "Transfer-Encoding": "chunked"  # Hint for some proxies
     }
 )

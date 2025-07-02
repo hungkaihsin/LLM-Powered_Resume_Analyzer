@@ -161,4 +161,12 @@ def analyze_resume_stream():
 
         yield f"data: {json.dumps({'done': True, 'result': {'resume_skills': resume_skills, 'jobs': job_results, 'recommended_courses': course_recommendations}})}\n\n"
 
-    return Response(stream_with_context(generate()), mimetype="text/event-stream")
+    return Response(
+    stream_with_context(generate()),
+    headers={
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "X-Accel-Buffering": "no",  # disables buffering in some web servers
+        "Connection": "keep-alive"  # hint for streaming connection
+    }
+)

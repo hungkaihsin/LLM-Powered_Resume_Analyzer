@@ -97,7 +97,7 @@ def analyze_resume_stream():
         return jsonify({"error": "No resume uploaded"}), 400
 
     unique_id = uuid.uuid4().hex
-    filepath = os.path.join("src/data", f"Resume_{unique_id}.pdf")
+    filepath = os.path.join("/tmp", f"Resume_{unique_id}.pdf")
     file.save(filepath)
 
     def generate():

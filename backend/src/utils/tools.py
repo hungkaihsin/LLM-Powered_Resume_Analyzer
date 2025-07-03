@@ -1,5 +1,5 @@
 import json
-from src.config import ADZUNA_APP_ID, ADZUNA_API_KEY
+
 
 
 

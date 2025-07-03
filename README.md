@@ -1,4 +1,4 @@
-# Resume Analyzer AI
+# Resume Analyzer
 
 [Live demo here](https://resume-analyzer-frontend-nht1.onrender.com)
 

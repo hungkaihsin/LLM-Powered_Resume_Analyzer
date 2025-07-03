@@ -14,7 +14,7 @@ const Introduction = () => {
       <div className="introduction-container fadeUp delay-2">
         <div className="introduction-card">
           <section>
-            <h1>Welcome to Resume Optimizer AI</h1>
+            <h1>Welcome to Resume Analyzer</h1>
             <p>
               Bridge the gap between your resume and your dream job. This tool analyzes your resume against a job description, providing a match score and actionable insights to help you stand out.
             </p>
@@ -26,10 +26,10 @@ const Introduction = () => {
           <section>
             <h2>What it Does</h2>
             <p>
-              Resume Optimizer AI is a powerful tool designed to help you tailor your resume for specific job opportunities. Here's how it works:
+              Resume Analyzer is a powerful tool designed to help you tailor your resume for specific job opportunities. Here's how it works:
             </p>
             <ul>
-              <li><strong>Resume Analysis:</strong> Upload your resume (PDF format), and our AI will extract your key skills.</li>
+              <li><strong>Resume Analysis:</strong> Upload your resume (PDF format), AI will extract your key skills.</li>
               <li><strong>Job Matching:</strong> Provide a job keyword, and the system will scrape relevant job postings.</li>
               <li><strong>Skill Comparison:</strong> Your resume skills are compared against the skills required for each job, generating a match percentage.</li>
               <li><strong>Identify Gaps:</strong> Discover which skills you're missing for your desired roles.</li>

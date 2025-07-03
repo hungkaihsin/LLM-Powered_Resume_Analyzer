@@ -1,6 +1,6 @@
-# Resume Optimizer AI
+# Resume Analyzer AI
 
-[Link to the website](https://resume-analyzer-frontend-nht1.onrender.com)
+[Live demo here](https://resume-analyzer-frontend-nht1.onrender.com)
 
 Resume Optimizer AI is a web application designed to help job seekers tailor their resumes to specific job descriptions. By leveraging Natural Language Processing (NLP) and Large Language Models (LLMs), this tool analyzes your resume, compares it against a target job posting, and provides a match percentage. It also identifies skill gaps and recommends relevant online courses to enhance your qualifications.
 
@@ -10,16 +10,16 @@ This project demonstrates the ability to integrate and manage NLP and LLM techno
 
 ## Key Features
 
-- **Resume Analysis:** Upload your resume (PDF or DOCX) to have it parsed and analyzed.
+- **Resume Analysis:** Upload your resume (PDF) to have it parsed and analyzed.
 - **Skill Extraction:** Utilizes Google's Gemini API to intelligently extract skills, experience, and education from your resume.
-- **Job Scraping:** Scrapes job postings from popular platforms to get real-time job requirements.
+- **Job Scraping:** Scrapes job postings from Adzuna by using its api to get real-time job requirements.
 - **Match Percentage:** Calculates and displays a percentage score indicating how well your resume matches a target job description.
-- **Course Recommendations:** Recommends online courses from various platforms to help you fill any identified skill gaps.
+- **Course Recommendations:** Recommends online courses (using Serpapi API) from Coursera to help you fill any identified skill gaps.
 
 ## Tech Stack
 
 - **Frontend:** React, Vite, CSS
-- **Backend:** Python, Flask/FastAPI (or similar)
+- **Backend:** Python, Flask/FastAPI
 - **AI/ML:** Google Gemini API
 - **Libraries:** Beautiful Soup (for scraping), PyMuPDF (for PDF processing)
 
@@ -48,7 +48,27 @@ To get a local copy up and running, follow these simple steps.
     cd ../backend
     pip install -r requirements.txt
     ```
-
+4. **Create .env file in backend for storage api links**
+    .env example:
+    ```sh
+    # Gemini
+    GEMINI_API_KEY = 'your api link'
+    
+    # Adzuna
+    ADZUNA_APP_ID = 'your app id'
+    ADZUNA_API_KEY = 'your api link'
+    
+    # Serper
+    SERPAPI_API_KEY = 'your api link'
+    
+    
+    PORT = 'your port'
+    ```
+    Registration for api links:
+    [Gemini](https://aistudio.google.com/apikey?_gl=1*1nwgp9b*_ga*MTM0NTk4NjA2Ni4xNzUwNTY1MzMx*_ga_P1DBVKWT6V*czE3NTE1MzQ4NDgkbzIkZzEkdDE3NTE1MzQ4NjQkajQ0JGwwJGgyMTA5NTM5MTk3)
+    [Adzuna](https://developer.adzuna.com/)
+    [Serper](https://serper.dev/?utm_term=serpapi&gad_source=1&gad_campaignid=18303173259&gbraid=0AAAAAo4ZGoHsv5r2SrTtMIFls1p8Wq0Tz&gclid=Cj0KCQjw1JjDBhDjARIsABlM2StzqNW7fbVMt0qe2c56jL0DEZohFTpOu7efQjhrWFm8EUTxIg-4nWsaAtl6EALw_wcB)
+    
 ### Usage
 
 1.  **Start the backend server**

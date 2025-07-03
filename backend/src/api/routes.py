@@ -100,6 +100,7 @@ def analyze_resume_stream():
 
     def generate():
         try:
+            print("Yielding: Scraping jobs...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Scraping jobs...'})}\n\n"
             jobs = scrape_adzuna_jobs(keyword)
             time.sleep(1)
@@ -108,10 +109,12 @@ def analyze_resume_stream():
             return
 
         try:
+            print("Yielding: Parsing resume...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Parsing resume...'})}\n\n"
             resume_text = parse_resume_pdf(filepath)
             time.sleep(1)
 
+            print("Yielding: Extracting resume skills...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Extracting resume skills...'})}\n\n"
             resume_skills_text = extract_skills_from_resume(resume_text)
             resume_skills = safe_extract_skills(resume_skills_text)
@@ -125,6 +128,7 @@ def analyze_resume_stream():
 
         for i, job in enumerate(jobs):
             try:
+                print(f"Yielding: Analyzing job {i+1} of {len(jobs)}...") # Added for debugging
                 yield f"data: {json.dumps({'step': f'Analyzing job {i+1} of {len(jobs)}'})}\n\n"
                 job_skills_text = extract_skills_from_job(job["description"])
                 job_skills = safe_extract_skills(job_skills_text)
@@ -147,6 +151,7 @@ def analyze_resume_stream():
         course_recommendations = []
         for skill in all_missing_skills:
             try:
+                print(f"Yielding: Finding courses for: {skill}...") # Added for debugging
                 yield f"data: {json.dumps({'step': f'Finding courses for: {skill}'})}\n\n"
                 query = normalize_skill_query(skill)
                 courses = search_courses_via_serper(query)
@@ -157,6 +162,7 @@ def analyze_resume_stream():
             except Exception:
                 continue
 
+        print("Yielding: Analysis complete!") # Added for debugging
         yield f"data: {json.dumps({'done': True, 'result': {'resume_skills': resume_skills, 'jobs': job_results, 'recommended_courses': course_recommendations}})}\n\n"
 
     return Response(

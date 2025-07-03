@@ -12,7 +12,7 @@ from src.config import GEMINI_API_KEY
 
 
 # scrape the data from aduza by using its api
-def scrape_adzuna_jobs(keyword: str, location="USA", max_results=5):
+def scrape_adzuna_jobs(keyword: str, location="USA", max_results=2):
 
     url = f"https://api.adzuna.com/v1/api/jobs/us/search/1"
     params = {
@@ -139,7 +139,7 @@ def safe_extract_skills(response_text):
     
 
 
-def search_courses_via_serper(skill: str, max_results=3):
+def search_courses_via_serper(skill: str, max_results=2):
     """
     Uses Serper.dev's Google Search API to find relevant Coursera courses for a given skill.
     """

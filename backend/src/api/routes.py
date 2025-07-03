@@ -102,9 +102,12 @@ def analyze_resume_stream():
         try:
             print("Yielding: Scraping jobs...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Scraping jobs...'})}\n\n"
+            print("Attempting to scrape Adzuna jobs...") # New debug log
             jobs = scrape_adzuna_jobs(keyword)
+            print(f"Adzuna jobs scraped successfully. Found {len(jobs)} jobs.") # New debug log
             time.sleep(1)
         except Exception as e:
+            print(f"Error during Adzuna job scraping: {e}") # More specific error log
             yield f"data: {json.dumps({'error': f'Adzuna API failed: {str(e)}'})}\n\n"
             return
 

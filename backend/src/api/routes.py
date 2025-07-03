@@ -100,11 +100,8 @@ def analyze_resume_stream():
 
     def generate():
         try:
-            print("Yielding: Scraping jobs...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Scraping jobs...'})}\n\n"
-            print("Attempting to scrape Adzuna jobs...") # New debug log
             jobs = scrape_adzuna_jobs(keyword)
-            print(f"Adzuna jobs scraped successfully. Found {len(jobs)} jobs.") # New debug log
             
         except Exception as e:
             print(f"Error during Adzuna job scraping: {e}") # More specific error log
@@ -112,12 +109,10 @@ def analyze_resume_stream():
             return
 
         try:
-            print("Yielding: Parsing resume...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Parsing resume...'})}\n\n"
             resume_text = parse_resume_pdf(filepath)
             
 
-            print("Yielding: Extracting resume skills...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Extracting resume skills...'})}\n\n"
             resume_skills_text = extract_skills_from_resume(resume_text)
             resume_skills = safe_extract_skills(resume_skills_text)
@@ -151,12 +146,9 @@ def analyze_resume_stream():
 
         job_results.sort(key=lambda x: x["match_percent"], reverse=True)
 
-        print(f"DEBUG: all_missing_skills before course search: {all_missing_skills}") # Debugging line
-
         course_recommendations = []
         for skill in all_missing_skills:
             try:
-                print(f"Yielding: Finding courses for: {skill}...") # Added for debugging
                 query = normalize_skill_query(skill)
                 courses = search_courses_via_serper(query)
                 course_recommendations.append({
@@ -166,8 +158,6 @@ def analyze_resume_stream():
             except Exception:
                 continue
 
-        print(f"DEBUG: Final course_recommendations: {course_recommendations}") # Debugging line
-        print("Yielding: Analysis complete!") # Added for debugging
         yield f"data: {json.dumps({'done': True, 'result': {'resume_skills': resume_skills, 'jobs': job_results, 'recommended_courses': course_recommendations}})}\n\n"
 
     return Response(

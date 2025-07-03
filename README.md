@@ -1,70 +1,87 @@
-# Resume Optimizer AI
+# Resume Analyzer with AI-Powered Skill Matching and Course Recommendations (Local Demo)
 
-[Link to the website](https://your-deployment-link.com)
+This is a local-only demonstration of a full-stack web application designed to analyze resumes, extract key skills, compare them against job descriptions, and suggest relevant online courses. This version is configured to run entirely offline, using mock data and simplified logic to replace external API calls, making it easy to set up and showcase.
 
-Resume Optimizer AI is a web application designed to help job seekers tailor their resumes to specific job descriptions. By leveraging Natural Language Processing (NLP) and Large Language Models (LLMs), this tool analyzes your resume, compares it against a target job posting, and provides a match percentage. It also identifies skill gaps and recommends relevant online courses to enhance your qualifications.
+## Features
 
-## About The Project
+*   **Resume Analysis:** Upload a PDF resume to extract skills.
+*   **Job Matching:** Compare extracted resume skills against a job keyword to see skill matches and gaps.
+*   **Course Recommendations:** Get suggestions for online courses based on identified missing skills.
+*   **Local-First:** All core functionalities run without external API keys or internet access (after initial setup).
 
-This project demonstrates the ability to integrate and manage NLP and LLM technologies in a practical application. It provides users with actionable insights to improve their resumes and increase their chances of landing an interview. The backend is powered by Python, and the frontend is built with React.
+## Technologies Used
 
-## Key Features
+*   **Frontend:** React (Vite), HTML, CSS
+*   **Backend:** Python (Flask)
+*   **PDF Parsing:** `pdfminer.six`
+*   **Skill Comparison:** `fuzzywuzzy`
 
-- **Resume Analysis:** Upload your resume (PDF or DOCX) to have it parsed and analyzed.
-- **Skill Extraction:** Utilizes Google's Gemini API to intelligently extract skills, experience, and education from your resume.
-- **Job Scraping:** Scrapes job postings from popular platforms to get real-time job requirements.
-- **Match Percentage:** Calculates and displays a percentage score indicating how well your resume matches a target job description.
-- **Course Recommendations:** Recommends online courses from various platforms to help you fill any identified skill gaps.
+## Setup Instructions
 
-## Tech Stack
+Follow these steps to get the application running on your local machine.
 
-- **Frontend:** React, Vite, CSS
-- **Backend:** Python, Flask/FastAPI (or similar)
-- **AI/ML:** Google Gemini API
-- **Libraries:** Beautiful Soup (for scraping), PyMuPDF (for PDF processing)
+### 1. Clone the Repository
 
-## Getting Started
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+cd YOUR_REPO_NAME
+```
 
-To get a local copy up and running, follow these simple steps.
+### 2. Backend Setup
 
-### Prerequisites
+Navigate to the `backend` directory, create a virtual environment, and install dependencies:
 
-- Node.js and npm
-- Python 3.x
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
+pip install -r requirements.txt
+```
 
-### Installation
+### 3. Frontend Setup
 
-1.  **Clone the repo**
-    ```sh
-    git clone https://github.com/your_username/NLP-LLM.git
-    ```
-2.  **Install NPM packages for the frontend**
-    ```sh
-    cd frontend
-    npm install
-    ```
-3.  **Install Python packages for the backend**
-    ```sh
-    cd ../backend
-    pip install -r requirements.txt
-    ```
+Open a new terminal tab/window, navigate to the `frontend` directory, and install Node.js dependencies:
 
-### Usage
+```bash
+cd ../frontend
+npm install
+```
 
-1.  **Start the backend server**
-    ```sh
-    cd backend/src
-    python app.py
-    ```
-2.  **Start the frontend development server**
-    ```sh
-    cd ../../frontend
-    npm run dev
-    ```
-3.  Open your browser and navigate to `http://localhost:5173` (or the address shown in your terminal).
+## Running the Application
 
-## Contact
+### 1. Start the Backend Server
 
-Daniel - [k_hung2@u.pacific.edu](mailto:k_hung2@u.pacific.edu)
+In your backend terminal (where you activated the virtual environment):
 
-Project Link: [https://github.com/hungkaihsin/NLP-LLM](https://github.com/hungkaihsin/NLP-LLM)
+```bash
+python src/app.py
+```
+
+The backend server should start on `http://127.0.0.1:5001/`.
+
+### 2. Start the Frontend Development Server
+
+In your frontend terminal:
+
+```bash
+npm run dev
+```
+
+The frontend development server will start, typically on `http://localhost:5173/`.
+
+### 3. Access the Application
+
+Open your web browser and navigate to the URL provided by the `npm run dev` command (e.g., `http://localhost:5173/`).
+
+## Important Notes
+
+*   **API-Free Operation:** This version uses mock data and simplified logic for job scraping, skill extraction, and course recommendations. It does not make calls to external APIs (Google Gemini, Adzuna, Serper).
+*   **Original Version:** The original, API-driven version of this project is deployed on Render. If you wish to see the full functionality with real API integrations, please refer to the live demo (link to your Render deployment).
+
+## Contributing
+
+Feel free to fork this repository and contribute!
+
+## License
+
+[Specify your license here, e.g., MIT License]

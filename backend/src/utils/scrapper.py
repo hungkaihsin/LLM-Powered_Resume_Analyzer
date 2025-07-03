@@ -10,7 +10,6 @@ from bs4 import BeautifulSoup
 
 # Mock function for local development
 def scrape_adzuna_jobs(keyword: str, location="USA", max_results=2):
-    print(f"MOCK: Scraping jobs for keyword: {keyword}")
     mock_jobs = [
         {
             "title": f"Software Engineer - {keyword}",
@@ -49,14 +48,12 @@ def parse_resume_pdf(file_path):
 
 # Mock functions for local development (replacing Gemini API calls)
 def extract_skills_from_resume(resume_text: str):
-    print("MOCK: Extracting skills from resume...")
     # Simple keyword-based extraction for local demo
     known_skills = ["Python", "JavaScript", "SQL", "Machine Learning", "Data Analysis", "React", "Flask", "AWS", "Docker", "Git", "Communication", "Problem Solving"]
     extracted = [skill for skill in known_skills if skill.lower() in resume_text.lower()]
     return json.dumps({"skills": extracted})
 
 def extract_skills_from_job(job_description: str):
-    print("MOCK: Extracting skills from job description...")
     # Simple keyword-based extraction for local demo
     known_skills = ["Python", "JavaScript", "SQL", "Machine Learning", "Data Analysis", "React", "Flask", "AWS", "Docker", "Git", "Communication", "Problem Solving", "Leadership", "Agile", "GoLang", "Kubernetes"]
     extracted = [skill for skill in known_skills if skill.lower() in job_description.lower()]
@@ -69,24 +66,18 @@ def compare_skills(resume_skills: list, job_skills: list, threshold=80):
     missing = []
 
     resume_skills_lower = [s.lower() for s in resume_skills]
-    print(f"DEBUG: Resume skills (lower): {resume_skills_lower}") # Debugging line
 
     for job_skill in job_skills:
         job_skill_lower = job_skill.lower()
         scores = [fuzz.token_set_ratio(job_skill_lower, res) for res in resume_skills_lower]
         best_score = max(scores) if scores else 0
-        print(f"DEBUG: Comparing job skill '{job_skill}' (lower: '{job_skill_lower}') with resume skills. Best score: {best_score}") # Debugging line
 
         if best_score >= threshold:
             matched.append(job_skill)
-            print(f"DEBUG: '{job_skill}' MATCHED.") # Debugging line
         else:
             missing.append(job_skill)
-            print(f"DEBUG: '{job_skill}' MISSING.") # Debugging line
 
     match_percent = round((len(matched) / len(job_skills)) * 100) if job_skills else 0
-    print(f"DEBUG: Final matched skills: {matched}") # Debugging line
-    print(f"DEBUG: Final missing skills: {missing}") # Debugging line
     return {
         "match_percent": match_percent,
         "matched_skills": matched,
@@ -99,7 +90,6 @@ def safe_extract_skills(response_text):
     """
     Cleans and parses Gemini response to extract the 'skills' list from JSON.
     """
-    print(f"safe_extract_skills received: {response_text}") # Debugging line
     try:
         # Remove triple backticks and optional 'json' label
         cleaned_text = re.sub(r"```json|```", "", response_text).strip()
@@ -107,7 +97,6 @@ def safe_extract_skills(response_text):
         # Load JSON
         data = json.loads(cleaned_text)
         extracted_skills = data.get("skills", [])
-        print(f"safe_extract_skills returning: {extracted_skills}") # Debugging line
         return extracted_skills
     except json.JSONDecodeError:
         print("❌ Failed to parse Gemini response as JSON:")
@@ -117,7 +106,6 @@ def safe_extract_skills(response_text):
 
 # Mock function for local development (replacing Serper API call)
 def search_courses_via_serper(skill: str, max_results=2):
-    print(f"MOCK: Searching courses for skill: {skill}")
     mock_courses = {
         "Python": [
             {"title": "Python for Everybody", "url": "https://www.coursera.org/learn/python"},

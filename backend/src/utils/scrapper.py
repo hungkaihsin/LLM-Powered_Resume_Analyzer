@@ -37,7 +37,7 @@ def scrape_adzuna_jobs(keyword: str, location="USA", max_results=5):
             "url": job.get("redirect_url")
         })
     
-    save_jsonl('src/data/raw_jobs.jsonl', jobs)
+    save_jsonl('/tmp/raw_jobs.jsonl', jobs)
     return jobs
 
 

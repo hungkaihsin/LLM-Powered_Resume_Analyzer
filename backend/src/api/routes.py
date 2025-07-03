@@ -29,9 +29,7 @@ def analyze_resume():
         return jsonify({"error": "No resume uploaded"}), 400
 
     unique_id = uuid.uuid4().hex
-    UPLOAD_DIR = "/tmp"
-    os.makedirs(UPLOAD_DIR, exist_ok=True)
-    filepath = os.path.join(UPLOAD_DIR, f"Resume_{unique_id}.pdf")
+    filepath = os.path.join("/tmp", f"Resume_{unique_id}.pdf")
     file.save(filepath)
 
     try:
@@ -102,18 +100,24 @@ def analyze_resume_stream():
 
     def generate():
         try:
+            print("Yielding: Scraping jobs...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Scraping jobs...'})}\n\n"
+            print("Attempting to scrape Adzuna jobs...") # New debug log
             jobs = scrape_adzuna_jobs(keyword)
+            print(f"Adzuna jobs scraped successfully. Found {len(jobs)} jobs.") # New debug log
             time.sleep(1)
         except Exception as e:
+            print(f"Error during Adzuna job scraping: {e}") # More specific error log
             yield f"data: {json.dumps({'error': f'Adzuna API failed: {str(e)}'})}\n\n"
             return
 
         try:
+            print("Yielding: Parsing resume...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Parsing resume...'})}\n\n"
             resume_text = parse_resume_pdf(filepath)
             time.sleep(1)
 
+            print("Yielding: Extracting resume skills...") # Added for debugging
             yield f"data: {json.dumps({'step': 'Extracting resume skills...'})}\n\n"
             resume_skills_text = extract_skills_from_resume(resume_text)
             resume_skills = safe_extract_skills(resume_skills_text)
@@ -127,6 +131,7 @@ def analyze_resume_stream():
 
         for i, job in enumerate(jobs):
             try:
+                print(f"Yielding: Analyzing job {i+1} of {len(jobs)}...") # Added for debugging
                 yield f"data: {json.dumps({'step': f'Analyzing job {i+1} of {len(jobs)}'})}\n\n"
                 job_skills_text = extract_skills_from_job(job["description"])
                 job_skills = safe_extract_skills(job_skills_text)
@@ -149,6 +154,7 @@ def analyze_resume_stream():
         course_recommendations = []
         for skill in all_missing_skills:
             try:
+                print(f"Yielding: Finding courses for: {skill}...") # Added for debugging
                 yield f"data: {json.dumps({'step': f'Finding courses for: {skill}'})}\n\n"
                 query = normalize_skill_query(skill)
                 courses = search_courses_via_serper(query)
@@ -159,6 +165,16 @@ def analyze_resume_stream():
             except Exception:
                 continue
 
+        print("Yielding: Analysis complete!") # Added for debugging
         yield f"data: {json.dumps({'done': True, 'result': {'resume_skills': resume_skills, 'jobs': job_results, 'recommended_courses': course_recommendations}})}\n\n"
 
-    return Response(stream_with_context(generate()), mimetype="text/event-stream")
+    return Response(
+    stream_with_context(generate()),
+    headers={
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache, no-transform",
+        "X-Accel-Buffering": "no",      # Most important: disables buffering in nginx/proxy
+        "Connection": "keep-alive",     # Keeps connection open for streaming
+        "Transfer-Encoding": "chunked"  # Hint for some proxies
+    }
+)

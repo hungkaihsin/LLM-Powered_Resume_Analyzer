@@ -14,30 +14,27 @@ const Introduction = () => {
       <div className="introduction-container fadeUp delay-2">
         <div className="introduction-card">
           <section>
-            <h1>Welcome to Resume Optimizer AI</h1>
+            <h1>Welcome to JobFit AI</h1>
             <p>
-              Bridge the gap between your resume and your dream job. This tool analyzes your resume against a job description, providing a match score and actionable insights to help you stand out.
+              Bridge the gap between your resume and your dream job. JobFit AI analyzes your professional profile against real-time job market data, providing a match score and actionable insights to help you land the interview.
             </p>
             <div className="cta-buttons">
-              <Link className="cta-button" to="/analysis">Get Started</Link>
+              <Link className="cta-button" to="/analysis">Start Analysis</Link>
             </div>
           </section>
 
           <section>
-            <h2>What it Does</h2>
+            <h2>How It Works</h2>
             <p>
-              Resume Optimizer AI is a powerful tool designed to help you tailor your resume for specific job opportunities. Here's how it works:
+              Our intelligent engine helps you tailor your resume for specific career paths in four simple steps:
             </p>
             <ul>
-              <li><strong>Resume Analysis:</strong> Upload your resume (PDF format), and our AI will extract your key skills.</li>
-              <li><strong>Job Matching:</strong> Provide a job keyword, and the system will scrape relevant job postings.</li>
-              <li><strong>Skill Comparison:</strong> Your resume skills are compared against the skills required for each job, generating a match percentage.</li>
-              <li><strong>Identify Gaps:</strong> Discover which skills you're missing for your desired roles.</li>
-              <li><strong>Course Recommendations:</strong> Get personalized recommendations for online courses to help you acquire the missing skills and boost your employability.</li>
+              <li><strong>Resume Parsing:</strong> Upload your PDF resume, and our AI instantly identifies your core professional and technical skills.</li>
+              <li><strong>Real-Time Job Search:</strong> Enter a target role, and we'll scrape live job postings to understand current market demands.</li>
+              <li><strong>Smart Matching:</strong> We compare your profile against actual job descriptions to calculate your fit percentage.</li>
+              <li><strong>Upskilling Roadmap:</strong> Identify skill gaps and get direct links to relevant Coursera courses to close them.</li>
             </ul>
           </section>
-
-
 
           <section>
             <h2>Contact Info</h2>
@@ -48,9 +45,8 @@ const Introduction = () => {
             </div>
           </section>
         </div>
-
-        </div>
       </div>
+    </div>
   );
 };
 

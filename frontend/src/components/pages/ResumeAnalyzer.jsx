@@ -3,7 +3,7 @@ import "../styles/ResumeAnalyzer.css";
 import "../styles/shared.css";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
-const BASE_URL = 'https://resume-analyzer-backend-2zpv.onrender.com';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const ResumeAnalyzer = () => {
   const [resume, setResume] = useState(null);

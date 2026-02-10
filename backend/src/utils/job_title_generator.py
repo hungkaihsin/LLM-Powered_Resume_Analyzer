@@ -4,7 +4,7 @@ from src.config import GEMINI_API_KEY
 genai.configure(api_key=GEMINI_API_KEY)
 
 def generate_titles_and_keywords_gemini(career_goal: str):
-    model = genai.GenerativeModel("gemini-2.5-flash")  
+    model = genai.GenerativeModel("gemini-flash-latest")  
     prompt = f"""
     Based on the user's goal: "{career_goal}", 
     generate:

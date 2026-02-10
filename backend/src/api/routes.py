@@ -169,12 +169,15 @@ def analyze_resume_stream():
         yield f"data: {json.dumps({'done': True, 'result': {'resume_skills': resume_skills, 'jobs': job_results, 'recommended_courses': course_recommendations}})}\n\n"
 
     return Response(
-    stream_with_context(generate()),
-    headers={
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache, no-transform",
-        "X-Accel-Buffering": "no",      # Most important: disables buffering in nginx/proxy
-        "Connection": "keep-alive",     # Keeps connection open for streaming
-        "Transfer-Encoding": "chunked"  # Hint for some proxies
-    }
-)
+        stream_with_context(generate()),
+        headers={
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache, no-transform",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+            "Transfer-Encoding": "chunked",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+        }
+    )

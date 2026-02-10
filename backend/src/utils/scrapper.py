@@ -1,5 +1,5 @@
 import requests
-from src.utils.tools import ADZUNA_API_KEY, ADZUNA_APP_ID, save_jsonl
+from src.utils.tools import save_jsonl
 from pdfminer.high_level import extract_text
 import google.generativeai as genai
 import os
@@ -7,7 +7,7 @@ from fuzzywuzzy import fuzz
 import json
 import re
 from bs4 import BeautifulSoup
-from src.config import GEMINI_API_KEY
+from src.config import GEMINI_API_KEY, ADZUNA_APP_ID, ADZUNA_API_KEY
 
 
 
@@ -52,46 +52,79 @@ def parse_resume_pdf(file_path):
 
 # Allow gemini to extract sthe skill from reusme
 
-genai.configure(api_key=GEMINI_API_KEY)
+if not GEMINI_API_KEY:
+    print("WARNING: GEMINI_API_KEY is not set in environment variables!")
 
+genai.configure(api_key=GEMINI_API_KEY, transport='rest')
 
 def extract_skills_from_resume(resume_text: str):
-    prompt = f"""
-    The following is a resume. Extract a list of **professional and technical skills** mentioned in it.
+    print(f"DEBUG: Starting Gemini extraction. Text length: {len(resume_text)}")
+    if not GEMINI_API_KEY:
+        print("ERROR: GEMINI_API_KEY is missing!")
+        return json.dumps({"skills": [], "error": "Missing API Key"})
 
+    prompt = f"""
+    The following is a resume. Extract a list of professional and technical skills mentioned in it.
     Resume:
     ---
     {resume_text}
     ---
-
-    Return the result in JSON format like this:
-    {{
-        "skills": ["Python", "Machine Learning", "Data Analysis"]
-    }}
+    Return the result in JSON format: {{"skills": ["Skill1", "Skill2"]}}
     """
-
-    model = genai.GenerativeModel("gemini-2.5-flash")
-    response = model.generate_content(prompt)
-    return response.text
+    
+    try:
+        print("DEBUG: Calling Gemini API for resume...")
+        model = genai.GenerativeModel("gemini-flash-latest")
+        
+        # Simple retry for quota
+        for attempt in range(2):
+            try:
+                response = model.generate_content(
+                    prompt, 
+                    generation_config={"response_mime_type": "application/json"}
+                )
+                return response.text
+            except Exception as e:
+                if "429" in str(e) and attempt < 1:
+                    import time
+                    time.sleep(2)
+                    continue
+                raise e
+    except Exception as e:
+        print(f"ERROR during Gemini API call: {str(e)}")
+        return json.dumps({"skills": [], "error": str(e)})
 
 
 def extract_skills_from_job(job_description: str):
+    if not GEMINI_API_KEY:
+        return json.dumps({"skills": []})
+        
     prompt = f"""
     The following is a job description. Extract a list of skills or tools required for the role.
-
     Job Description:
     ---
     {job_description}
     ---
-
-    Return in JSON format:
-    {{
-        "skills": [...]
-    }}
+    Return in JSON format: {{"skills": [...]}}
     """
-    model = genai.GenerativeModel("gemini-2.5-flash")
-    response = model.generate_content(prompt)
-    return response.text
+    try:
+        model = genai.GenerativeModel("gemini-flash-latest")
+        for attempt in range(2):
+            try:
+                response = model.generate_content(
+                    prompt,
+                    generation_config={"response_mime_type": "application/json"}
+                )
+                return response.text
+            except Exception as e:
+                if "429" in str(e) and attempt < 1:
+                    import time
+                    time.sleep(2)
+                    continue
+                raise e
+    except Exception as e:
+        print(f"ERROR during Gemini Job API call: {str(e)}")
+        return json.dumps({"skills": []})
 
 
 
@@ -145,13 +178,14 @@ def search_courses_via_serper(skill: str, max_results=3):
     """
     import os
     import requests
+    from src.config import SERPAPI_API_KEY
 
-    SERPER_KEY = os.getenv("SERPAPI_API_KEY")
-    if not SERPER_KEY:
-        raise ValueError("Missing SERPAPI_API_KEY in environment variables.")
+    if not SERPAPI_API_KEY:
+        print("WARNING: SERPAPI_API_KEY is missing!")
+        return []
 
     headers = {
-        "X-API-KEY": SERPER_KEY,
+        "X-API-KEY": SERPAPI_API_KEY,
         "Content-Type": "application/json"
     }
 

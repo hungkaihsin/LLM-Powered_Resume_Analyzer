@@ -3,7 +3,7 @@ import "../styles/ResumeAnalyzer.css";
 import "../styles/shared.css";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 const ResumeAnalyzer = () => {
   const [resume, setResume] = useState(null);
@@ -61,6 +61,11 @@ const ResumeAnalyzer = () => {
             setLoading(false);
             setProgress(100);
             setStatus("Analysis complete!");
+          } else if (jsonData.error) {
+            toast.error(jsonData.error);
+            setLoading(false);
+            setStatus("Error occurred.");
+            break;
           } else if (jsonData.step) {
             setStatus(jsonData.step);
             setProgress((prev) => Math.min(prev + 10, 95));
